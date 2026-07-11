@@ -174,37 +174,35 @@ userEmail =
       const Divider(),
 
       ListTile(
+  leading: const Icon(
+    Icons.logout,
+    color: Colors.red,
+  ),
 
-        leading: const Icon(
-          Icons.logout,
-          color: Colors.red,
-        ),
+  title: const Text(
+    "Logout",
+    style: TextStyle(
+      color: Colors.red,
+    ),
+  ),
 
-        title: const Text(
-          "Logout",
-          style: TextStyle(
-            color: Colors.red,
-          ),
-        ),
+  onTap: () async {
 
-        onTap: () {
+    final prefs = await SharedPreferences.getInstance();
 
-          Navigator.pushAndRemoveUntil(
+    await prefs.setBool("isLogin", false);
 
-            context,
+    if (!context.mounted) return;
 
-            MaterialPageRoute(
-              builder: (_) =>
-                  const LoginScreen(),
-            ),
-
-            (route) => false,
-
-          );
-
-        },
-
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const LoginScreen(),
       ),
+      (route) => false,
+    );
+  },
+),
 
     ],
   ),

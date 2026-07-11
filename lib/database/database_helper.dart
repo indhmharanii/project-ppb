@@ -23,7 +23,7 @@ class DatabaseHelper {
 
       join(dbPath, "medicare.db"),
 
-      version: 1,
+      version: 3,
 
       onCreate: (db, version) async {
 

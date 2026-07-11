@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../home/home_screen.dart';
 import '../register/register_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../admin/admin_home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -185,9 +186,23 @@ SizedBox(
       prefs.getString("password") ?? "";
 
   if (!mounted) return;
+if (email == "admin@gmail.com" &&
+    password == "admin123") {
+
+  Navigator.pushReplacement(
+  // ignore: use_build_context_synchronously
+  context,
+  MaterialPageRoute(
+    builder: (_) => const AdminHome(),
+  ),
+);
+
+  return;
+}
 
   if (email == savedEmail &&
       password == savedPassword) {
+        await prefs.setBool("isLogin", true);
         final savedName =
     prefs.getString("name") ?? "Guest";
 
@@ -202,6 +217,7 @@ await prefs.setString(
 );
 
     Navigator.pushReplacement(
+      // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(
         builder: (_) => const HomeScreen(),
@@ -211,6 +227,7 @@ await prefs.setString(
   } else {
 
     showDialog(
+      // ignore: use_build_context_synchronously
       context: context,
       builder: (_) => AlertDialog(
 

@@ -200,6 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   if (!mounted) return;
 
   showDialog(
+    // ignore: use_build_context_synchronously
     context: context,
     barrierDismissible: false,
     builder: (_) => AlertDialog(
@@ -207,7 +208,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         borderRadius: BorderRadius.circular(18),
       ),
 
-      title: const Text("Registrasi Berhasil 🎉"),
+      title: const Text("Registrasi Berhasil"),
 
       content: const Text(
         "Akun berhasil dibuat.\nSilakan login menggunakan akun yang baru didaftarkan.",

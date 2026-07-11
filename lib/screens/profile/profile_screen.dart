@@ -96,7 +96,7 @@ class _ProfileScreenState
         centerTitle: true,
         backgroundColor: const Color.fromARGB(255, 202, 223, 255),
         title: const Text(
-          "My Profile",
+          "Profil",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -187,7 +187,7 @@ class _ProfileScreenState
 
             menuTile(
               icon: Icons.notifications,
-              title: "Notifications",
+              title: "Notifikasi",
               onTap: () {
                 Navigator.push(
                   context,
@@ -201,7 +201,7 @@ class _ProfileScreenState
 
             menuTile(
               icon: Icons.info_outline,
-              title: "About Application",
+              title: "Tentang Aplikasi",
               onTap: () {
                 showAboutDialog(
 

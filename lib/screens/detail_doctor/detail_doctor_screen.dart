@@ -73,7 +73,7 @@ class DetailDoctorScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
         title: const Text(
-          "Doctor Detail",
+          "Detail Dokter",
           style: TextStyle(
             fontWeight: FontWeight.bold,
           ),
@@ -194,7 +194,7 @@ class DetailDoctorScreen extends StatelessWidget {
 
                 infoCard(
                   icon: Icons.work_history,
-                  title: "Experience",
+                  title: "Pengalaman",
                   value: doctor.experience,
                 ),
 
@@ -202,7 +202,7 @@ class DetailDoctorScreen extends StatelessWidget {
 
                 infoCard(
                   icon: Icons.people,
-                  title: "Patients",
+                  title: "Pasien",
                   value: doctor.patients,
                 ),
 
@@ -210,7 +210,7 @@ class DetailDoctorScreen extends StatelessWidget {
 
                 infoCard(
                   icon: Icons.schedule,
-                  title: "Schedule",
+                  title: "Jadwal",
                   value: doctor.schedule,
                 ),
 
@@ -222,7 +222,7 @@ class DetailDoctorScreen extends StatelessWidget {
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                "About Doctor",
+                "Tentang Dokter",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -281,7 +281,7 @@ class DetailDoctorScreen extends StatelessWidget {
                     children: [
 
                       const Text(
-                        "Consultation Fee",
+                        "Biaya Konsultasi",
                         style: TextStyle(
                           color: Colors.grey,
                         ),
@@ -302,7 +302,7 @@ class DetailDoctorScreen extends StatelessWidget {
                   ),
 
                   SizedBox(
-                    width: 150,
+                    width: 165,
                     height: 50,
 
                     child: ElevatedButton(
@@ -327,7 +327,7 @@ class DetailDoctorScreen extends StatelessWidget {
                       },
 
                       child: const Text(
-                        "BOOK NOW",
+                        "Booking Sekarang",
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,

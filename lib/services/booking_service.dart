@@ -47,4 +47,31 @@ class BookingService {
 
     await db.delete("booking");
   }
+  Future<int> updateStatus(
+  int id,
+  String status,
+) async {
+  final db = await DatabaseHelper.database;
+
+  return await db.update(
+    "booking",
+    {
+      "status": status,
+    },
+    where: "id=?",
+    whereArgs: [id],
+  );
+}
+
+Future<int> deleteBooking(
+  int id,
+) async {
+  final db = await DatabaseHelper.database;
+
+  return await db.delete(
+    "booking",
+    where: "id=?",
+    whereArgs: [id],
+  );
+}
 }

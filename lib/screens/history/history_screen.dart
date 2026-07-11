@@ -26,7 +26,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
   title: const Column(
     children: [
       Text(
-        "Booking History",
+        "History Booking",
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
@@ -178,6 +178,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [
                     BoxShadow(
+                      // ignore: deprecated_member_use
                       color: Colors.black.withOpacity(0.05),
                       blurRadius: 15,
                       offset: const Offset(0, 6),

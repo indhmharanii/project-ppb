@@ -93,32 +93,32 @@ class CategorySection extends StatelessWidget {
 
               category(
                 icon: Icons.medical_services,
-                title: "General",
+                title: "Umum",
               ),
 
               category(
                 icon: Icons.favorite,
-                title: "Heart",
+                title: "Jantung",
               ),
 
               category(
                 icon: Icons.child_care,
-                title: "Child",
+                title: "Anak",
               ),
 
               category(
                 icon: Icons.medical_information,
-                title: "Dentist",
+                title: "Gigi",
               ),
 
               category(
                 icon: Icons.remove_red_eye,
-                title: "Eye",
+                title: "Mata",
               ),
 
               category(
                 icon: Icons.spa,
-                title: "Skin",
+                title: "Kulit",
               ),
 
             ],

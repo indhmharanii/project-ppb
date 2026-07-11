@@ -7,17 +7,17 @@ class NotificationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xffEEF3FA),
+      backgroundColor: const Color.fromARGB(255, 202, 223, 255),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xffEEF3FA),
+        backgroundColor: const Color.fromARGB(255, 202, 223, 255),
         elevation: 0,
         centerTitle: true,
         scrolledUnderElevation: 0,
         title: const Column(
           children: [
             Text(
-              "Notifications",
+              "Notifikasi",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 22,
@@ -25,7 +25,7 @@ class NotificationScreen extends StatelessWidget {
             ),
             SizedBox(height: 2),
             Text(
-              "Latest updates",
+              "Pembaruan Terbaru",
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 12,

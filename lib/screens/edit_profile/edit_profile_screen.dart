@@ -53,7 +53,7 @@ class _EditProfileScreenState
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        backgroundColor: const Color(0xffF7F9FC),
+        backgroundColor: const Color.fromARGB(255, 202, 223, 255),
         title: const Text(
           "Edit Profile",
           style: TextStyle(
@@ -189,12 +189,14 @@ class _EditProfileScreenState
 
   if (!mounted) return;
 
+  // ignore: use_build_context_synchronously
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(
       content: Text("Profile berhasil diperbarui."),
     ),
   );
 
+  // ignore: use_build_context_synchronously
   Navigator.pop(context, true);
 
 },

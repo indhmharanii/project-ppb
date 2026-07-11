@@ -10,7 +10,7 @@ final BookingService bookingService = BookingService();
 class BookingScreen extends StatefulWidget {
   final DoctorModel doctor;
   
-  BookingScreen({
+  const BookingScreen({
     super.key,
     required this.doctor,
   });
@@ -416,6 +416,7 @@ notificationData.insert(
 );
 
 showDialog(
+  // ignore: use_build_context_synchronously
   context: context,
   barrierDismissible: false,
   builder: (_) {
@@ -501,7 +502,7 @@ showDialog(
                 },
 
                 child: const Text(
-                  "Go To History",
+                  "History Booking",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
