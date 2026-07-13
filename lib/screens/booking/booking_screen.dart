@@ -389,6 +389,9 @@ const SizedBox(height: 28),
   }
 
 await bookingService.insertBooking(
+  patient: patientController.text.trim(),
+  complaint: complaintController.text.trim(),
+
   doctor: widget.doctor.name,
   speciality: widget.doctor.speciality,
   image: widget.doctor.image,
@@ -397,8 +400,9 @@ await bookingService.insertBooking(
   price: widget.doctor.price,
   date: selectedDate.toString(),
   time: times[selectedTime],
-  status: "Confirmed",
+  status: "Pending",
 );
+
 notificationData.insert(
   0,
   NotificationModel(

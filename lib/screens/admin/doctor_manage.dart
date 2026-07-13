@@ -182,18 +182,18 @@ class _DoctorManageScreenState
                   child: ListTile(
 
                     leading: CircleAvatar(
-  radius: 28,
-  backgroundColor: const Color(0xffEAF3FF),
+                      radius: 28,
+                      backgroundColor: const Color(0xffEAF3FF),
 
-  child: ClipOval(
-    child: Image.asset(
-      doctor.image,
-      width: 52,
-      height: 52,
-      fit: BoxFit.contain,
-    ),
-  ),
-),
+                      child: ClipOval(
+                        child: Image.asset(
+                          doctor.image,
+                          width: 52,
+                          height: 52,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
 
                     title: Text(
                       doctor.name,

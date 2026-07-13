@@ -27,10 +27,14 @@ class DatabaseHelper {
 
       onCreate: (db, version) async {
 
-        await db.execute("""
+       await db.execute("""
 
 CREATE TABLE booking(
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+
+  patient TEXT,
+  complaint TEXT,
+
   doctor TEXT,
   speciality TEXT,
   image TEXT,

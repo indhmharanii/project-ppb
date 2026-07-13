@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../../services/booking_service.dart';
 
@@ -168,7 +169,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
             itemBuilder: (context, index) {
 
               final booking = bookings[index];
+              final status = booking["status"];
 
+              Color bgColor;
+              Color textColor;
+
+             switch (status) {
+                  case "Pending":
+                    bgColor = Colors.orange.shade100;
+                    textColor = Colors.orange;
+                    break;
+
+                  case "Confirmed":
+                  case "Dikonfirmasi":
+                    bgColor = Colors.blue.shade100;
+                    textColor = Colors.blue;
+                    break;
+
+                  case "Completed":
+                  case "Selesai":
+                    bgColor = Colors.green.shade100;
+                    textColor = Colors.green;
+                    break;
+
+                  default:
+                    bgColor = Colors.grey.shade300;
+                    textColor = Colors.grey;
+                }
               return Container(
                 margin: const EdgeInsets.only(bottom: 18),
                 padding: const EdgeInsets.all(18),
@@ -243,7 +270,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           const SizedBox(height: 8),
 
                           Text(
-                            booking["date"],
+                            DateFormat("dd/MM/yyyy").format(
+                              DateTime.parse(booking["date"]),
+                            ),
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 12,
@@ -268,18 +297,17 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         vertical: 8,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.green.shade100,
+                        color: bgColor,
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        booking["status"],
-                        style: const TextStyle(
-                          color: Colors.green,
+                        status,
+                        style: TextStyle(
+                          color: textColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
-
                   ],
                 ),
               );

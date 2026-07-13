@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../services/booking_service.dart';
+import 'package:intl/intl.dart';
 
 class BookingManageScreen extends StatefulWidget {
   const BookingManageScreen({super.key});
@@ -218,28 +219,40 @@ class _BookingManageScreenState
                               ),
 
                               subtitle: Column(
-
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
-
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
 
                                   const SizedBox(height: 5),
 
                                   Text(
-                                    booking["date"],
+                                    "Keluhan : ${booking["complaint"]}",
                                   ),
+
+                                  const SizedBox(height: 5),
+
+                                  Text(
+                                    "Dokter : ${booking["doctor"]}",
+                                  ),
+
+                                  Text(
+                                    booking["speciality"],
+                                  ),
+
+                                  const SizedBox(height: 5),
+
+                                  Text(
+                                DateFormat("dd/MM/yyyy").format(
+                                  DateTime.parse(booking["date"]),
+                                ),
+                              ),
 
                                   Text(
                                     booking["time"],
                                   ),
 
                                 ],
-
                               ),
-
-                            ),
-
+                           ),
                             const Divider(),
 
                             Row(

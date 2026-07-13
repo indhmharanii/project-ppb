@@ -572,19 +572,30 @@ else
                 children: [
 
                   Text(
+  booking["patient"] ?? "-",
+  style: const TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.bold,
+  ),
+),
+const SizedBox(height: 4),
 
-                    booking["doctor"],
+Text(
+  "Keluhan : ${booking["complaint"]}",
+  style: const TextStyle(
+    color: Colors.black87,
+    fontSize: 13,
+  ),
+),
 
-                    style: const TextStyle(
-
-                      fontSize:16,
-
-                      fontWeight: FontWeight.bold,
-
-                    ),
-
-                  ),
-
+const SizedBox(height: 6),
+Text(
+  booking["doctor"],
+  style: const TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 14,
+  ),
+),
                   const SizedBox(height:3),
 
                   Text(

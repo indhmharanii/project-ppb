@@ -4,6 +4,9 @@ import '../database/database_helper.dart';
 
 class BookingService {
   Future<int> insertBooking({
+  required String patient,
+  required String complaint,
+
   required String doctor,
   required String speciality,
   required String image,
@@ -18,19 +21,22 @@ class BookingService {
   final db = await DatabaseHelper.database;
 
   return db.insert(
-    "booking",
-    {
-      "doctor": doctor,
-      "speciality": speciality,
-      "image": image,
-      "location": location,
-      "rating": rating,
-      "price": price,
-      "date": date,
-      "time": time,
-      "status": status,
-    },
-  );
+  "booking",
+  {
+    "patient": patient,
+    "complaint": complaint,
+
+    "doctor": doctor,
+    "speciality": speciality,
+    "image": image,
+    "location": location,
+    "rating": rating,
+    "price": price,
+    "date": date,
+    "time": time,
+    "status": status,
+  },
+);
 }
 
   Future<List<Map<String, dynamic>>> getBookings() async {
