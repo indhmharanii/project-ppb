@@ -4,6 +4,7 @@ import 'package:project_final_ppb/screens/login/login_screen.dart';
 
 import '../../services/booking_service.dart';
 import '../../data/doctor_data.dart';
+import '../../models/booking_model.dart';
 
 import 'doctor_manage.dart';
 import 'booking_manage.dart';
@@ -32,25 +33,20 @@ class _AdminDashboardState extends State<AdminDashboard> {
     return "Selamat Malam";
   }
 }
-int calculateIncome(List<Map<String, dynamic>> bookings) {
-
+int calculateIncome(List<BookingModel> bookings) {
   int total = 0;
 
   for (var booking in bookings) {
-
-    String price = booking["price"]
-        .toString()
+    String price = booking.price
         .replaceAll("Rp", "")
         .replaceAll(".", "")
         .replaceAll(",", "")
         .replaceAll(" ", "");
 
     total += int.tryParse(price) ?? 0;
-
   }
 
   return total;
-
 }
 String formatIncome(int income) {
 
@@ -286,8 +282,8 @@ String formatIncome(int income) {
 
 ),
 
-      body: FutureBuilder<List<Map<String,dynamic>>>(
-        future: bookingService.getBookings(),
+      body: StreamBuilder<List<BookingModel>>(
+        stream: bookingService.getBookings(),
 
         builder: (context,snapshot){
 
@@ -492,13 +488,13 @@ else
 
     itemBuilder: (context,index){
 
-      final booking = bookings[index];
+      BookingModel booking = bookings[index];
 
       final tanggal = DateFormat(
         "dd MMM yyyy",
       ).format(
         DateTime.parse(
-          booking["date"],
+          booking.date,
         ),
       );
 
@@ -539,26 +535,26 @@ else
           children: [
 
            CircleAvatar(
-  radius: 30,
-  backgroundColor: const Color(0xffEAF3FF),
+              radius: 30,
+              backgroundColor: const Color(0xffEAF3FF),
 
-  child: ClipOval(
+              child: ClipOval(
 
-    child: Image.asset(
+                child: Image.asset(
 
-      booking["image"],
+                  booking.image,
 
-      width: 70,
+                  width: 70,
 
-      height: 70,
+                  height: 70,
 
-      fit: BoxFit.contain,
+                  fit: BoxFit.contain,
 
-    ),
+                ),
 
-  ),
+              ),
 
-),
+            ),
 
             const SizedBox(width:15),
 
@@ -572,7 +568,7 @@ else
                 children: [
 
                   Text(
-  booking["patient"] ?? "-",
+  booking.patient,
   style: const TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.bold,
@@ -581,7 +577,7 @@ else
 const SizedBox(height: 4),
 
 Text(
-  "Keluhan : ${booking["complaint"]}",
+  "Keluhan : ${booking.complaint}",
   style: const TextStyle(
     color: Colors.black87,
     fontSize: 13,
@@ -590,7 +586,7 @@ Text(
 
 const SizedBox(height: 6),
 Text(
-  booking["doctor"],
+  booking.doctor,
   style: const TextStyle(
     fontWeight: FontWeight.w600,
     fontSize: 14,
@@ -600,7 +596,7 @@ Text(
 
                   Text(
 
-                    booking["speciality"],
+                    booking.speciality,
 
                     style: const TextStyle(
 
@@ -652,7 +648,7 @@ Text(
                       const SizedBox(width:5),
 
                       Text(
-                        booking["time"],
+                        booking.time,
                         style: const TextStyle(
                           fontSize:12,
                         ),
@@ -682,9 +678,9 @@ Text(
               decoration: BoxDecoration(
 
                 color:
-    booking["status"] == "Pending"
+    booking.status == "Pending"
         ? Colors.orange.shade100
-        : booking["status"] == "Completed"
+        : booking.status == "Completed"
             ? Colors.blue.shade100
             : Colors.green.shade100,
 
@@ -695,14 +691,14 @@ Text(
 
               child: Text(
 
-                booking["status"],
+                booking.status,
 
                style: TextStyle(
 
   color:
-      booking["status"] == "Pending"
+      booking.status == "Pending"
           ? Colors.orange
-          : booking["status"] == "Completed"
+          : booking.status == "Completed"
               ? Colors.blue
               : Colors.green,
 

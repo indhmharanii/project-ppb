@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
+import '../../models/booking_model.dart';
 import '../../services/booking_service.dart';
 
 class HistoryScreen extends StatefulWidget {
@@ -114,8 +114,8 @@ class _HistoryScreenState extends State<HistoryScreen> {
   ],
 
 ),
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: bookingService.getBookings(),
+      body: StreamBuilder<List<BookingModel>>(
+        stream: bookingService.getBookings(),
         builder: (context, snapshot) {
 
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -161,15 +161,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
             );
           }
 
-          final bookings = snapshot.data!;
+          final List<BookingModel> bookings = snapshot.data!;
 
           return ListView.builder(
             padding: const EdgeInsets.all(20),
             itemCount: bookings.length,
             itemBuilder: (context, index) {
 
-              final booking = bookings[index];
-              final status = booking["status"];
+              BookingModel booking = bookings[index];
+              final status = booking.status;
 
               Color bgColor;
               Color textColor;
@@ -226,7 +226,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                       child: Padding(
                         padding: const EdgeInsets.all(6),
                         child: Image.asset(
-                          booking["image"],
+                          booking.image,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -240,7 +240,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                         children: [
 
                           Text(
-                            booking["doctor"],
+                            booking.doctor,
                             style: const TextStyle(
                               fontSize: 17,
                               fontWeight: FontWeight.bold,
@@ -250,7 +250,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           const SizedBox(height: 4),
 
                           Text(
-                            booking["speciality"],
+                            booking.speciality,
                             style: const TextStyle(
                               color: Colors.grey,
                             ),
@@ -259,7 +259,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           const SizedBox(height: 8),
 
                           Text(
-                            booking["price"],
+                            booking.price,
                             style: const TextStyle(
                               color: Color(0xff2F80ED),
                               fontWeight: FontWeight.bold,
@@ -271,7 +271,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
 
                           Text(
                             DateFormat("dd/MM/yyyy").format(
-                              DateTime.parse(booking["date"]),
+                              DateTime.parse(booking.date),
                             ),
                             style: const TextStyle(
                               color: Colors.grey,
@@ -280,7 +280,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                           ),
 
                           Text(
-                            booking["time"],
+                            booking.time,
                             style: const TextStyle(
                               color: Colors.grey,
                               fontSize: 12,

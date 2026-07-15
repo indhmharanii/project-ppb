@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../login/login_screen.dart';
 import '../notification/notification_screen.dart';
 import '../edit_profile/edit_profile_screen.dart';
+import '../../services/auth_service.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -18,6 +20,7 @@ class _ProfileScreenState
 
   String userName = "Rani";
   String userEmail = "rani@gmail.com";
+  final AuthService authService = AuthService();
 
   @override
   void initState() {
@@ -228,7 +231,7 @@ class _ProfileScreenState
     SizedBox(height: 15),
 
     Text(
-      "Developed by Team 5",
+      "Developed by Indah Maharani Husnul",
       style: TextStyle(
         fontWeight: FontWeight.bold,
       ),
@@ -269,18 +272,22 @@ class _ProfileScreenState
                   ),
                 ),
 
-                onPressed: () {
+                onPressed: () async {
 
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) =>
-                          const LoginScreen(),
-                    ),
-                    (route) => false,
-                  );
+  await authService.logout();
 
-                },
+  if (!mounted) return;
+
+  Navigator.pushAndRemoveUntil(
+    // ignore: use_build_context_synchronously
+    context,
+    MaterialPageRoute(
+      builder: (_) => const LoginScreen(),
+    ),
+    (route) => false,
+  );
+
+},
               ),
             ),
 

@@ -1,3 +1,1 @@
-import '../models/notification_model.dart';
-
-List<NotificationModel> notificationData = [];
+final List<Map<String, dynamic>> notificationData = [];

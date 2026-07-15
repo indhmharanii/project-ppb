@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../services/booking_service.dart';
+import '../../models/booking_model.dart';
 
 class AdminNotificationScreen extends StatefulWidget {
   const AdminNotificationScreen({super.key});
@@ -35,9 +36,9 @@ class _AdminNotificationScreenState
 
       ),
 
-      body: FutureBuilder<List<Map<String, dynamic>>>(
+      body: StreamBuilder<List<BookingModel>>(
 
-        future: bookingService.getBookings(),
+        stream: bookingService.getBookings(),
 
         builder: (context, snapshot) {
 
@@ -49,7 +50,7 @@ class _AdminNotificationScreenState
 
           }
 
-          final bookings = snapshot.data!;
+          final List<BookingModel> bookings = snapshot.data!;
 
           if (bookings.isEmpty) {
 
@@ -71,7 +72,7 @@ class _AdminNotificationScreenState
 
             itemBuilder: (context, index) {
 
-              final booking = bookings[index];
+              BookingModel booking = bookings[index];
 
               return Card(
 
@@ -97,7 +98,7 @@ class _AdminNotificationScreenState
 
                   title: Text(
 
-                    booking["doctor"],
+                    booking.doctor,
 
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
@@ -107,7 +108,7 @@ class _AdminNotificationScreenState
 
                   subtitle: Text(
 
-                    "${booking["date"]}\n${booking["time"]}",
+                    "${booking.date}\n${booking.time}",
 
                   ),
 
@@ -133,7 +134,7 @@ class _AdminNotificationScreenState
 
                     child: Text(
 
-                      booking["status"],
+                      booking.status,
 
                       style: const TextStyle(
 

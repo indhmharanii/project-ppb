@@ -1,6 +1,5 @@
-import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../home/home_screen.dart';
 import '../login/login_screen.dart';
@@ -22,13 +21,11 @@ void initState() {
 Future<void> checkLogin() async {
   await Future.delayed(const Duration(seconds: 3));
 
-  final prefs = await SharedPreferences.getInstance();
-
-  final isLogin = prefs.getBool("isLogin") ?? false;
+  final user = FirebaseAuth.instance.currentUser;
 
   if (!mounted) return;
 
-  if (isLogin) {
+  if (user != null) {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(

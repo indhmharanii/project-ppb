@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../models/booking_model.dart';
 import '../../services/booking_service.dart';
 import 'package:intl/intl.dart';
 
@@ -20,25 +21,6 @@ class _BookingManageScreenState
       TextEditingController();
 
   String keyword = "";
-
-  Future<List<Map<String, dynamic>>> loadBooking() async {
-
-    final data = await bookingService.getBookings();
-
-    if (keyword.isEmpty) {
-      return data;
-    }
-
-    return data.where((booking) {
-
-      return booking["doctor"]
-          .toString()
-          .toLowerCase()
-          .contains(keyword);
-
-    }).toList();
-
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -122,9 +104,8 @@ class _BookingManageScreenState
 
           Expanded(
 
-            child: FutureBuilder<List<Map<String, dynamic>>>(
-
-              future: loadBooking(),
+            child: StreamBuilder<List<BookingModel>>(
+  stream: bookingService.getBookings(),
 
               builder: (context, snapshot) {
 
@@ -150,7 +131,15 @@ class _BookingManageScreenState
 
                 }
 
-                final bookings = snapshot.data!;
+                List<BookingModel> bookings = snapshot.data!;
+
+if (keyword.isNotEmpty) {
+  bookings = bookings.where((booking) {
+    return booking.doctor
+        .toLowerCase()
+        .contains(keyword);
+  }).toList();
+}
 
                 return ListView.builder(
 
@@ -184,75 +173,99 @@ class _BookingManageScreenState
 
                           children: [
 
-                            ListTile(
+                            Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
 
-                              contentPadding:
-                                  EdgeInsets.zero,
+    Text(
+      booking.doctor,
+      style: const TextStyle(
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
 
-                              leading: const CircleAvatar(
+    const SizedBox(height: 4),
 
-                                radius: 25,
+    Text(
+      booking.speciality,
+      style: const TextStyle(
+        color: Colors.grey,
+        fontSize: 15,
+      ),
+    ),
 
-                                backgroundColor:
-                                    Color(0xff2F80ED),
+    const SizedBox(height: 15),
 
-                                child: Icon(
-                                  Icons.person,
-                                  color: Colors.white,
-                                ),
+    Row(
+      children: [
+        const Icon(
+          Icons.person_outline,
+          size: 18,
+          color: Colors.blue,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            "Pasien : ${booking.patient}",
+            style: const TextStyle(
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    ),
 
-                              ),
+    const SizedBox(height: 10),
 
-                              title: Text(
+    Row(
+      children: [
+        const Icon(
+          Icons.medical_information_outlined,
+          size: 18,
+          color: Colors.orange,
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            "Keluhan : ${booking.complaint}",
+          ),
+        ),
+      ],
+    ),
 
-                                booking["doctor"],
+    const SizedBox(height: 10),
 
-                                style: const TextStyle(
+    Row(
+      children: [
+        const Icon(
+          Icons.calendar_today,
+          size: 18,
+          color: Colors.green,
+        ),
+        const SizedBox(width: 8),
+        Text(
+          DateFormat("dd/MM/yyyy")
+              .format(DateTime.parse(booking.date)),
+        ),
+      ],
+    ),
 
-                                  fontWeight:
-                                      FontWeight.bold,
+    const SizedBox(height: 10),
 
-                                  fontSize: 17,
-
-                                ),
-
-                              ),
-
-                              subtitle: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-
-                                  const SizedBox(height: 5),
-
-                                  Text(
-                                    "Keluhan : ${booking["complaint"]}",
-                                  ),
-
-                                  const SizedBox(height: 5),
-
-                                  Text(
-                                    "Dokter : ${booking["doctor"]}",
-                                  ),
-
-                                  Text(
-                                    booking["speciality"],
-                                  ),
-
-                                  const SizedBox(height: 5),
-
-                                  Text(
-                                DateFormat("dd/MM/yyyy").format(
-                                  DateTime.parse(booking["date"]),
-                                ),
-                              ),
-
-                                  Text(
-                                    booking["time"],
-                                  ),
-
-                                ],
-                              ),
-                           ),
+    Row(
+      children: [
+        const Icon(
+          Icons.access_time,
+          size: 18,
+          color: Colors.deepPurple,
+        ),
+        const SizedBox(width: 8),
+        Text(booking.time),
+      ],
+    ),
+  ],
+),
                             const Divider(),
 
                             Row(
@@ -276,7 +289,7 @@ class _BookingManageScreenState
 
                                   child: DropdownButton<String>(
 
-                                    value: booking["status"],
+                                    value: booking.status,
 
                                     isExpanded: true,
 
@@ -307,7 +320,7 @@ class _BookingManageScreenState
 
                                       await bookingService
                                           .updateStatus(
-                                        booking["id"],
+                                        booking.id,
                                         value,
                                       );
 
@@ -405,7 +418,7 @@ class _BookingManageScreenState
 
                                     await bookingService
                                         .deleteBooking(
-                                      booking["id"],
+                                      booking.id,
                                     );
 
                                     setState(() {});

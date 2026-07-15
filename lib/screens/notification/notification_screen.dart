@@ -79,12 +79,12 @@ class NotificationScreen extends StatelessWidget {
           final notification = notificationData[index];
 
           return notificationCard(
-            icon: notification.icon,
-            color: notification.color,
-            title: notification.title,
-            subtitle: notification.subtitle,
-            time: notification.time,
-          );
+  icon: notification["icon"],
+  color: notification["color"],
+  title: notification["title"],
+  subtitle: notification["subtitle"],
+  time: notification["time"],
+);
 
         },
       ),

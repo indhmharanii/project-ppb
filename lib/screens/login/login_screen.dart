@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
+import '../../services/auth_service.dart';
 import '../home/home_screen.dart';
 import '../register/register_screen.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../admin/admin_home.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -15,10 +16,13 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
 
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+final passwordController = TextEditingController();
 
-  bool obscure = true;
-  bool remember = false;
+final AuthService authService = AuthService();
+
+bool obscure = true;
+bool remember = false;
+bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -132,137 +136,122 @@ SizedBox(
 
   child: ElevatedButton(
 
-    onPressed: () async {
+   onPressed: loading
+    ? null
+    : () async {
+        String email = emailController.text.trim();
+        String password = passwordController.text.trim();
 
-  String email = emailController.text.trim();
-  String password = passwordController.text.trim();
+        if (email.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Email tidak boleh kosong"),
+            ),
+          );
+          return;
+        }
 
-  // Email kosong
-  if (email.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Email tidak boleh kosong"),
-      ),
-    );
-    return;
-  }
+        if (!email.contains("@") || !email.contains(".")) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Masukkan email yang valid"),
+            ),
+          );
+          return;
+        }
 
-  // Format email
-  if (!email.contains("@") || !email.contains(".")) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Masukkan email yang valid"),
-      ),
-    );
-    return;
-  }
+        if (password.isEmpty) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Password tidak boleh kosong"),
+            ),
+          );
+          return;
+        }
 
-  // Password kosong
-  if (password.isEmpty) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Password tidak boleh kosong"),
-      ),
-    );
-    return;
-  }
+        if (password.length < 6) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text("Password minimal 6 karakter"),
+            ),
+          );
+          return;
+        }
 
-  // Password minimal
-  if (password.length < 6) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Password minimal 6 karakter"),
-      ),
-    );
-    return;
-  }
+        setState(() {
+          loading = true;
+        });
 
-  final prefs = await SharedPreferences.getInstance();
+        try {
+          // LOGIN ADMIN
+          if (email == "admin@gmail.com" &&
+              password == "admin123") {
+            if (!mounted) return;
 
-  final savedEmail =
-      prefs.getString("email") ?? "";
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const AdminHome(),
+              ),
+            );
+            return;
+          }
 
-  final savedPassword =
-      prefs.getString("password") ?? "";
+          // LOGIN USER FIREBASE
+          await authService.login(
+            email: email,
+            password: password,
+          );
 
-  if (!mounted) return;
-if (email == "admin@gmail.com" &&
-    password == "admin123") {
+          if (!mounted) return;
 
-  Navigator.pushReplacement(
-  // ignore: use_build_context_synchronously
-  context,
-  MaterialPageRoute(
-    builder: (_) => const AdminHome(),
-  ),
-);
+          Navigator.pushReplacement(
+            // ignore: use_build_context_synchronously
+            context,
+            MaterialPageRoute(
+              builder: (_) => const HomeScreen(),
+            ),
+          );
+        } on FirebaseAuthException catch (e) {
+          String pesan = "Login gagal";
 
-  return;
-}
+          if (e.code == "user-not-found") {
+            pesan = "Email tidak ditemukan";
+          } else if (e.code == "wrong-password") {
+            pesan = "Password salah";
+          } else if (e.code == "invalid-credential") {
+            pesan = "Email atau password salah";
+          } else if (e.code == "invalid-email") {
+            pesan = "Format email tidak valid";
+          }
 
-  if (email == savedEmail &&
-      password == savedPassword) {
-        await prefs.setBool("isLogin", true);
-        final savedName =
-    prefs.getString("name") ?? "Guest";
+          if (!mounted) return;
 
-await prefs.setString(
-  "currentName",
-  savedName,
-);
+          // ignore: use_build_context_synchronously
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(pesan),
+            ),
+          );
+        } finally {
+          if (mounted) {
+            setState(() {
+              loading = false;
+            });
+          }
+        }
+      },
 
-await prefs.setString(
-  "currentEmail",
-  savedEmail,
-);
-
-    Navigator.pushReplacement(
-      // ignore: use_build_context_synchronously
-      context,
-      MaterialPageRoute(
-        builder: (_) => const HomeScreen(),
-      ),
-    );
-
-  } else {
-
-    showDialog(
-      // ignore: use_build_context_synchronously
-      context: context,
-      builder: (_) => AlertDialog(
-
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
+    child: loading
+    ? const SizedBox(
+        height: 22,
+        width: 22,
+        child: CircularProgressIndicator(
+          strokeWidth: 2,
+          color: Colors.white,
         ),
-
-        title: const Text(
-          "Login Gagal",
-        ),
-
-        content: const Text(
-          "Email atau password salah.",
-        ),
-
-        actions: [
-
-          TextButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Text("OK"),
-          ),
-
-        ],
-      ),
-    );
-
-  }
-
-},
-
-    child: const Text(
-      "LOGIN",
-    ),
+      )
+    : const Text("LOGIN"),
 
   ),
 

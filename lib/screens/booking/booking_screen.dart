@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../../models/doctor_model.dart';
 import '../home/home_screen.dart';
 import '../../data/notification_data.dart';
-import '../../models/notification_model.dart';
 import '../../services/booking_service.dart';
 
 final BookingService bookingService = BookingService();
@@ -405,18 +404,14 @@ await bookingService.insertBooking(
 
 notificationData.insert(
   0,
-  NotificationModel(
-    title: "Booking Berhasil",
-
-    subtitle:
+  {
+    "title": "Booking Berhasil",
+    "subtitle":
         "Booking dengan ${widget.doctor.name} berhasil dikonfirmasi.",
-
-    icon: Icons.calendar_month,
-
-    color: Colors.blue,
-
-    time: "Baru saja",
-  ),
+    "icon": Icons.calendar_month,
+    "color": Colors.blue,
+    "time": "Baru saja",
+  },
 );
 
 showDialog(

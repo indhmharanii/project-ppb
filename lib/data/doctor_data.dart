@@ -61,6 +61,7 @@ final List<DoctorModel> doctorData = [
     about:
         "Dokter spesialis anak yang fokus pada tumbuh kembang anak, imunisasi, dan konsultasi kesehatan bayi hingga remaja.",
   ),
+
   DoctorModel(
     image: "assets/images/doctor5.png",
     name: "Dr. Kevin Pratama",
@@ -90,4 +91,5 @@ final List<DoctorModel> doctorData = [
     about:
         "Dokter spesialis kulit yang menangani berbagai masalah kulit, jerawat, alergi, infeksi kulit, serta perawatan kesehatan kulit.",
   ),
+
 ];

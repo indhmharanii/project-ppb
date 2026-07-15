@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import '../login/login_screen.dart';
 
@@ -24,21 +24,19 @@ class _AdminProfileScreenState
   }
 
   Future<void> loadAdmin() async {
+  final user = FirebaseAuth.instance.currentUser;
 
-    final prefs =
-        await SharedPreferences.getInstance();
+  setState(() {
+    email = user?.email ?? "admin@gmail.com";
 
-    setState(() {
-
-      name = prefs.getString("name") ??
-          "Administrator";
-
-      email = prefs.getString("email") ??
-          "admin@gmail.com";
-
-    });
-
-  }
+    if (email == "admin@gmail.com") {
+      name = "Administrator";
+    } else {
+      name = user?.displayName ??
+          email.split("@").first;
+    }
+  });
+}
 
   @override
   Widget build(BuildContext context) {
